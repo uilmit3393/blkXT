@@ -1,0 +1,85 @@
+def process_image(img):
+    # Example of how to use the Databucket() object defined above
+    # to print the current x, y and yaw values 
+    # print(data.xpos[data.count], data.ypos[data.count], data.yaw[data.count])
+
+    # TODO: 
+    # 1) Define source and destination points for perspective transform
+    # 2) Apply perspective transform
+    # 3) Apply color threshold to identify navigable terrain/obstacles/rock samples
+    # 4) Convert thresholded image pixel values to rover-centric coords
+    # 5) Convert rover-centric pixel values to world coords
+    # 6) Update worldmap (to be displayed on right side of screen)
+        # Example: data.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
+        #          data.worldmap[rock_y_world, rock_x_world, 1] += 1
+        #          data.worldmap[navigable_y_world, navigable_x_world, 2] += 1
+    # constants
+# defining worldspace
+
+    scale = 10
+    
+
+    #apply perspective translation
+
+    warped = perspect_transform1(img)
+
+    #convert to binary
+
+    colorsel = color_thresh(warped, rgb_thresh=(160, 160, 160))
+
+    #check for Sample
+
+    sample = sample_detect(img)
+    sampleWarped = perspect_transform1(sample)
+
+    #check for obstacle
+
+    obstacle =  1 - colorsel
+
+
+    #get Rover Position and Orientation
+
+    rover_xpos = data.xpos
+    rover_ypos = data.ypos
+    rover_yaw = data.yaw
+    print(np.size(sampleWarped))
+    print(np.size(colorsel))
+    # translate current detected environment to Rover Coodinates
+    nxpix, nypix = rover_coords(colorsel)
+    sxpix, sypix = rover_coords(sampleWarped)
+    oxpix, oypix = rover_coords(obstacle)
+    
+    # Get navigable and sample pixel positions in world coords
+    o_x_world, o_y_world = pix_to_world(oxpix, oypix, rover_xpos, rover_ypos, rover_yaw, data.worldmap.shape[0], scale)
+    n_x_world, n_y_world = pix_to_world(nxpix, nypix, rover_xpos, rover_ypos, rover_yaw, data.worldmap.shape[0], scale)
+    s_x_world, s_y_world = pix_to_world(sxpix, sypix, rover_xpos, rover_ypos, rover_yaw, data.worldmap.shape[0], scale)
+    # Add pixel positions to worldmap
+
+    data.worldmap[o_y_world, o_x_world, 0] += 1
+    data.worldmap[s_y_world, s_x_world, 1] += 1
+    data.worldmap[n_y_world, n_x_world, 2] += 1
+    
+    # 7) Make a mosaic image, below is some example code
+        # First create a blank image (can be whatever shape you like)
+    output_image = np.zeros((img.shape[0] + data.worldmap.shape[0], img.shape[1]*2, 3))
+        # Next you can populate regions of the image with various output
+        # Here I'm putting the original image in the upper left hand corner
+    output_image[0:img.shape[0], 0:img.shape[1]] = img
+
+        # Let's create more images to add to the mosaic, first a warped image
+    #warped = perspect_transform(img, source, destination)
+        # Add the warped image in the upper right hand corner
+    output_image[0:img.shape[0], img.shape[1]:] = warped
+
+        # Overlay worldmap with ground truth map
+    map_add = cv2.addWeighted(data.worldmap, 1, data.ground_truth, 0.5, 0)
+        # Flip map overlay so y-axis points upward and add to output_image 
+    output_image[img.shape[0]:, 0:data.worldmap.shape[1]] = np.flipud(map_add)
+
+
+        # Then putting some text over the image
+    cv2.putText(output_image,"Output Video", (20, 20), 
+                cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+    data.count += 1 # Keep track of the index in the Databucket()
+    
+    return output_image
