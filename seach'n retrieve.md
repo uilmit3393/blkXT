@@ -29,9 +29,9 @@ Having numerous index errors trying to process user video.
 
 using the color_thesh  and obstacle detection functions, navigable and obstacle azimuths are stored in the Rover.nav_angles and Rover.obs_angles.  This allows for the rover to detemine possible steer angles and potential obstacles.
 
-To ensure fidelity of the map, map addition is ceased if pitch and roll exceeds 0.5 degrees
+To ensure fidelity of the map, map addition is ceased if pitch and roll exceeds 0.5 degrees off waterline.
 
-when a sample is detected via sample_detect, a flag is triggered placing the rover into sample retrieval mode.
+When a sample is detected via sample_detect, a flag is triggered placing the rover into sample retrieval mode, and rover steering is based off of angles to the sample with an slight offset.
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
 
@@ -41,4 +41,5 @@ A stuck mode is initiated when the rover has a velocity of 0 with a non zero thr
 
 Improvements if I had more time:
 Better crawl logic; have the rover maintain a set distance from any wall, should reduce fidelity loss due to constant yaw changes.
-Location store and waypoint system; determine already mapped areas and auto route rover to missing areas. Could increase rover speed and maintain fidelity.
+Location store and waypoint system; determine already mapped areas and auto route rover to missing areas. Could increase rover speed and maintain map fidelity.
+Improved sample approach routing; Allows for rover to temporarly break LOS of sample to reposition to allow for better approach vector.
