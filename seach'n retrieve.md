@@ -21,7 +21,7 @@ similar to color_thresh, I filtered for obstacles by looking for RGB < 160
 
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 
-Having numerous index errors trying to process user video. 
+Having index errors trying to process the user video. Attempted to cease video process before bad index, unsuccessful in getting it to work.
 
 ### Autonomous Navigation and Mapping
 
