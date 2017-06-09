@@ -5,7 +5,6 @@
 
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
-Here is an example of how to include an image in your writeup.
 
 Function Color_Thresh
 using the RGB values, I created in essence a high pass filter for the color of the whitish sand/dirt (RGB > 160). Creating a binary array of where the traversable terrain existed
