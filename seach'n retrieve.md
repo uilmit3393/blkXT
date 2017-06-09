@@ -2,7 +2,6 @@
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  
 
-You're reading it!
 
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
@@ -23,7 +22,7 @@ similar to color_thresh, I filtered for obstacles by looking for RGB < 160
 
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 
-
+Having numerous index errors trying to process user video. 
 
 ### Autonomous Navigation and Mapping
 
@@ -37,7 +36,9 @@ when a sample is detected via sample_detect, a flag is triggered placing the rov
 
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.  
 
-The rover is set to wall crawl the terrain on the left side. This is accomplished by setting the rover to max left turn anytime the max navigable azimuth exceeds 50 degrees. This is damped by resetting the steer angle to zero on every other decision step. This prevents the rover from getting into an infinite turns in the open areas.
+The rover is set to wall crawl the terrain on the left side. This is accomplished by setting the rover to max left turn anytime the max navigable azimuth exceeds 50 degrees. This is damped by resetting the steer angle to zero on every other decision step. This is done to prevent the rover from getting into an infinite turns in the open areas.
+
+A stuck mode is initiated when the rover has a velocity of 0 with a non zero throttle for more than 1 decision cycle. When initaited the rover will try to make a max azimuth turn towards the side with the most navigable area.
 
 Improvements if I had more time:
 Better crawl logic; have the rover maintain a set distance from any wall, should reduce fidelity loss due to constant yaw changes.
