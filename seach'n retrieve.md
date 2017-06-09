@@ -40,6 +40,9 @@ The rover is set to wall crawl the terrain on the left side. This is accomplishe
 A stuck mode is initiated when the rover has a velocity of 0 with a non zero throttle for more than 1 decision cycle. When initaited the rover will try to make a max azimuth turn towards the side with the most navigable area.
 
 Improvements if I had more time:
+
 Better crawl logic; have the rover maintain a set distance from any wall, should reduce fidelity loss due to constant yaw changes.
+
 Location store and waypoint system; determine already mapped areas and auto route rover to missing areas. Could increase rover speed and maintain map fidelity.
+
 Improved sample approach routing; Allows for rover to temporarly break LOS of sample to reposition to allow for better approach vector.
